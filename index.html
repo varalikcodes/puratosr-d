@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Industry & Startups Collaboration Go-No-Go System</title>
   
-  <!-- Import Montserrat from Google Fonts -->
+  <!-- Montserrat Font -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
@@ -20,7 +20,7 @@
       flex-direction: column;
     }
 
-    /* Transparent Glass Top Bar */
+    /* Transparent Top Bar */
     .top-bar {
       position: fixed;
       top: 0;
@@ -47,15 +47,11 @@
       height: 50px;
     }
 
-    .title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #800000;
-    }
-
     .top-buttons {
       display: flex;
       gap: 10px;
+      margin-left: auto;
+      margin-right: 20px;
     }
 
     .btn {
@@ -64,7 +60,7 @@
       border: none;
       background-color: #800000;
       color: white;
-      border-radius: 30px; /* more rounded */
+      border-radius: 30px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s;
       font-family: 'Montserrat', sans-serif;
@@ -76,16 +72,14 @@
       transform: scale(1.05);
     }
 
-    /* Centering the container vertically */
     .main-content {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-top: 70px; /* height of top-bar */
+      padding-top: 70px; /* Prevent overlap from top bar */
     }
 
-    /* Transparent container */
     .container {
       background: rgba(255, 255, 255, 0.85);
       border-radius: 16px;
@@ -93,6 +87,13 @@
       width: 400px;
       text-align: center;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .inner-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #800000;
+      margin-bottom: 10px;
     }
 
     .question {
@@ -110,11 +111,10 @@
 </head>
 <body>
 
-  <!-- Top Transparent Bar -->
+  <!-- Transparent Top Bar -->
   <div class="top-bar">
     <div class="top-left">
       <img class="logo" src="puratos-logo.jpeg" alt="Puratos Logo" />
-      <div class="title">Go/No-Go System</div>
     </div>
     <div class="top-buttons">
       <button id="returnBtn" class="btn">Return</button>
@@ -125,12 +125,13 @@
   <!-- Centered Question Area -->
   <div class="main-content">
     <div class="container" id="container">
+      <div class="inner-title">Go/No-Go System</div>
       <div class="question" id="question">Loading question...</div>
       <div class="options" id="options"></div>
     </div>
   </div>
 
-  <!-- Logic -->
+  <!-- JS Logic -->
   <script>
     const questions = [
       { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
