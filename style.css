@@ -1,0 +1,167 @@
+/* Organic & Artisanal Base Styles */
+body {
+  /* Soft, warm gradient background: earthy browns, golden wheat, creamy vanilla hues */
+  background: linear-gradient(145deg, #A0522D, #F5DEB3, #FFF8DC);
+  background-size: cover;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Optional subtle paper texture overlay */
+.body-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Replace with your own paper texture image URL */
+  background: url('path/to/subtle-paper-texture.png') repeat;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* Container with woodgrain overlay and glassmorphism effect */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7); /* Glassmorphism */
+  border-radius: 16px;
+  border: 2px solid rgba(128, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Optional woodgrain overlay for the container */
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Replace with your own woodgrain image URL */
+  background: url('path/to/woodgrain-overlay.png') no-repeat center/cover;
+  opacity: 0.1;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Title styles */
+.title {
+  text-align: center;
+  background: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  border: 2px solid #800000;
+}
+
+/* Logo styles */
+.logo {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+/* Question text style */
+.question {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+/* Options container with futuristic elements */
+.options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Button styling: organic with a futuristic twist */
+.btn {
+  padding: 15px 25px;
+  font-size: 1em;
+  border: none;
+  background-color: #800000;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
+  position: relative;
+}
+
+/* Glowing effect for futuristic feel */
+.btn::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 5px;
+  background: transparent;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.btn:hover {
+  background-color: #660000;
+  transform: scale(1.05);
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+/* Futuristic & Innovative UI Details */
+/* Minimalist geometric lines */
+.divider {
+  height: 1px;
+  background: rgba(128, 0, 0, 0.5);
+  margin: 20px 0;
+}
+
+/* Muted background animation: slow-moving particles */
+@keyframes particleAnimation {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -1000px -1000px;
+  }
+}
+
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: url('path/to/particle-pattern.png') repeat;
+  opacity: 0.05;
+  animation: particleAnimation 60s linear infinite;
+  z-index: 0;
+}
+
+/* Food-Inspired Digital Overlays */
+/* Example for flour or cocoa dusting effect */
+.food-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Replace with your own food-inspired texture image */
+  background: url('path/to/food-dust-texture.png') no-repeat center/cover;
+  opacity: 0.1;
+  pointer-events: none;
+}
