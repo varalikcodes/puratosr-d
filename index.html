@@ -70,9 +70,25 @@
       background-color: #660000;
       transform: scale(1.05);
     }
+
+    /* New: Top right button container */
+    .top-buttons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- New: Top right control buttons -->
+  <div class="top-buttons">
+    <button id="returnBtn" class="btn">Return</button>
+    <button id="startOverBtn" class="btn">Start Over</button>
+  </div>
 
 <div class="title">
   <img class="logo" src="https://www.foodbusinessnews.net/ext/resources/2022/02/04/puratos-logo-LEAD.jpg?height=635&t=1643994463&width=1200" alt="Puratos Logo">
@@ -110,6 +126,7 @@
   ];
 
   let currentQuestionIndex = 0;
+  let history = [];
 
   function renderQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
@@ -139,6 +156,32 @@
       renderQuestion();
     }
   }
+
+  // Wrap the original nextQuestion function to store history
+  const originalNextQuestion = nextQuestion;
+  nextQuestion = function(optionIndex) {
+    history.push(currentQuestionIndex);
+    originalNextQuestion(optionIndex);
+  };
+
+  // New: Return to previous question
+  function returnQuestion() {
+    if (history.length > 0) {
+      currentQuestionIndex = history.pop();
+      renderQuestion();
+    }
+  }
+
+  // New: Start over from the beginning
+  function startOver() {
+    history = [];
+    currentQuestionIndex = 0;
+    renderQuestion();
+  }
+
+  // Attach event listeners to the new buttons
+  document.getElementById('returnBtn').onclick = returnQuestion;
+  document.getElementById('startOverBtn').onclick = startOver;
 
   renderQuestion();
 </script>
