@@ -138,28 +138,29 @@
       resize: vertical;
     }
 
-    .download-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 100;
-      background-color: #800000;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      font-family: 'Montserrat', sans-serif;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      display: none;
-    }
+  .download-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    background-color: #800000;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    transition: background-color 0.3s, transform 0.2s;
+  }
 
-    .download-btn:hover {
-      background-color: #660000;
-      transform: scale(1.05);
-    }
-  </style>
+  .download-btn:hover {
+    background-color: #660000;
+    transform: scale(1.05);
+  }
+
+</style>
 </head>
 
 <body>
@@ -188,7 +189,7 @@
     </div>
   </div>
 
-  <button id="downloadDocxBtn" class="download-btn" onclick="downloadDocx()">Download Summary</button>
+  <button id="downloadDocxBtn" class="btn download-btn" onclick="downloadDocx()">Download Summary</button> 
 
   <script>
     const questions = [
@@ -226,25 +227,48 @@
     }
 
     function renderQuestion() {
-      const currentQuestion = questions[currentQuestionIndex];
-      document.getElementById('question').innerHTML = currentQuestion.question;
-      const optionsContainer = document.getElementById('options');
-      optionsContainer.innerHTML = '';
-      if (currentQuestion.options.length > 0) {
-        optionsContainer.style.display = 'flex';
-        currentQuestion.options.forEach((option, index) => {
-          const button = document.createElement('button');
-          button.className = 'btn';
-          button.textContent = option;
-          button.onclick = () => nextQuestion(index);
-          optionsContainer.appendChild(button);
-        });
-      } else {
-        optionsContainer.style.display = 'none';
-      }
-      document.getElementById('notes').value = notesMap[currentQuestionIndex] || '';
-      updateProgressBar();
+    const currentQuestion = questions[currentQuestionIndex];
+    const optionsContainer = document.getElementById('options');
+    const notesBox = document.getElementById('notes');
+    const container = document.getElementById('container');
+  
+    // Set current question HTML
+    document.getElementById('question').innerHTML = currentQuestion.question;
+    optionsContainer.innerHTML = '';
+  
+    // Save current notes
+    if (notesBox) {
+      notesBox.value = notesMap[currentQuestionIndex] || '';
     }
+  
+    // Check if terminal (GO or NO-GO)
+    const isEnd =
+      currentQuestion.next.length === 1 &&
+      currentQuestion.next[0] === -1;
+  
+    if (isEnd) {
+      // Show summary directly
+      showSummary();
+      return;
+    }
+
+  // Otherwise render options
+  if (currentQuestion.options.length > 0) {
+    optionsContainer.style.display = 'flex';
+    currentQuestion.options.forEach((option, index) => {
+      const button = document.createElement('button');
+      button.className = 'btn';
+      button.textContent = option;
+      button.onclick = () => nextQuestion(index);
+      optionsContainer.appendChild(button);
+    });
+  } else {
+    optionsContainer.style.display = 'none';
+  }
+
+  updateProgressBar();
+}
+
 
     function nextQuestion(optionIndex) {
       const currentQuestion = questions[currentQuestionIndex];
