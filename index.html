@@ -80,14 +80,18 @@
       }
 
 
-    .container {
+     .container {
       background: rgba(255, 255, 255, 0.85);
       border-radius: 16px;
       padding: 30px;
       width: 400px;
-      text-align: center;
+      text-align: center;       /* This centers text */
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
+      display: flex;            /* Add this */
+      flex-direction: column;   /* Stack vertically */
+      align-items: center;      /* ⬅️ This centers child elements horizontally */
+  }
+
 
     .progress-bar-container {
       width: 100%;
