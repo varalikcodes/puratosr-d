@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Go-No-Go System</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
@@ -17,6 +17,7 @@
       flex-direction: column;
       color: #333;
     }
+
     .top-bar {
       position: fixed;
       top: 0;
@@ -29,12 +30,15 @@
       padding: 0 20px;
       z-index: 999;
     }
+
     .logo {
       height: 100px;
     }
+
     .top-buttons .btn {
       margin-left: 10px;
     }
+
     .btn {
       background-color: #800000;
       color: white;
@@ -44,10 +48,12 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
+
     .btn:hover {
       background-color: #660000;
       transform: scale(1.05);
     }
+
     .main-content {
       display: flex;
       justify-content: center;
@@ -55,6 +61,7 @@
       flex: 1;
       margin-top: 100px;
     }
+
     .container {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 16px;
@@ -63,6 +70,7 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       text-align: center;
     }
+
     .progress-bar-container {
       width: 100%;
       height: 8px;
@@ -71,25 +79,31 @@
       overflow: hidden;
       margin-bottom: 20px;
     }
+
     .progress-bar {
       height: 100%;
       background-color: #800000;
       width: 0%;
       transition: width 0.2s ease;
     }
+
     .options {
       display: flex;
       gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
+      margin-top: 15px;
     }
+
     textarea {
       width: 100%;
       padding: 10px;
       margin-top: 15px;
       border-radius: 10px;
       border: 1px solid #ccc;
+      font-family: 'Montserrat', sans-serif;
     }
+
     #downloadDocxBtn {
       position: fixed;
       bottom: 20px;
@@ -106,20 +120,44 @@
       <button id="startOverBtn" class="btn">Start Over</button>
     </div>
   </div>
+
   <div class="main-content">
     <div class="container" id="container">
       <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
       </div>
-      <div id="question" class="question">Loading...</div>
+      <div id="question" class="question"></div>
       <div id="options" class="options"></div>
       <textarea id="notes" rows="3" placeholder="Optional notes..."></textarea>
     </div>
   </div>
+
   <button id="downloadDocxBtn" class="btn" onclick="downloadDocx()">Download Summary</button>
 
   <script>
-    const questions = [...]; // Insert your question array here
+    const questions = [
+      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
+      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] },
+      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] },
+      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] },
+      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] },
+      { question: "Has the technology been done by someone else?", options: ["Yes", "No"], next: [7, 8] },
+      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] },
+      { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] },
+      { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] },
+      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] },
+      { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] },
+      { question: "Does the collaborator have well-developed sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] },
+      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] },
+      { question: "Insert technology-specific questions here", options: [], next: [-1] },
+      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] },
+      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 17] },
+      { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] },
+      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] },
+      { question: "Insert more ingredient-specific questions here", options: [], next: [-1] },
+      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] }
+    ];
+
     let currentQuestionIndex = 0;
     let history = [];
     let decisions = [];
