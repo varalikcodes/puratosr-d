@@ -20,7 +20,6 @@
       display: flex;
       flex-direction: column;
     }
-
     .top-bar {
       position: fixed;
       top: 0;
@@ -34,24 +33,20 @@
       padding: 0 20px;
       z-index: 100;
     }
-
     .top-left {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .logo {
       height: 120px;
       margin-top: 20px;
     }
-
     .top-buttons {
       display: flex;
       gap: 10px;
       margin-right: 40px;
     }
-
     .btn {
       padding: 10px 20px;
       font-size: 0.95rem;
@@ -64,12 +59,10 @@
       font-family: 'Montserrat', sans-serif;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
-
     .btn:hover {
       background-color: #660000;
       transform: scale(1.05);
     }
-
     .main-content {
       flex: 1;
       display: flex;
@@ -77,7 +70,6 @@
       justify-content: center;
       padding-top: 100px;
     }
-
     .container {
       background: rgba(255, 255, 255, 0.85);
       border-radius: 16px;
@@ -86,7 +78,6 @@
       text-align: center;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
-
     .progress-bar-container {
       width: 100%;
       height: 8px;
@@ -95,7 +86,6 @@
       margin-bottom: 20px;
       overflow: hidden;
     }
-
     .progress-bar {
       height: 100%;
       background-color: #800000;
@@ -103,19 +93,16 @@
       transition: width 0.4s ease;
       border-radius: 5px;
     }
-
     .inner-title {
       font-size: 1.5rem;
       font-weight: 600;
       color: #800000;
       margin-bottom: 10px;
     }
-
     .question {
       font-size: 1.2rem;
       margin-bottom: 20px;
     }
-
     .options {
       display: flex;
       justify-content: center;
@@ -123,11 +110,9 @@
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
-
     .notes-section {
       text-align: left;
     }
-
     textarea {
       width: 100%;
       padding: 10px;
@@ -137,29 +122,26 @@
       border-radius: 10px;
       resize: vertical;
     }
-
-  .download-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  border-radius: 30px;
-  background-color: #800000;
-  color: white;
-  padding: 12px 20px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.download-btn:hover {
-  background-color: #660000;
-  transform: scale(1.05);
-}
-
-</style>
+    .download-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      border-radius: 30px;
+      background-color: #800000;
+      color: white;
+      padding: 12px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.3s;
+      display: none;
+    }
+    .download-btn:hover {
+      background-color: #660000;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
-
 <body>
   <div class="top-bar">
     <div class="top-left">
@@ -186,32 +168,35 @@
     </div>
   </div>
 
-  <button id="downloadDocxBtn" class="btn download-btn" onclick="downloadDocx()">Download Summary</button> 
+  <button id="downloadDocxBtn" class="btn download-btn" onclick="downloadDocx()">Download Summary</button>
 
   <script>
-    const questions = [
-      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
-      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] },
-      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] },
-      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] },
-      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] },
-      { question: "Has the technology been done by someone else?", options: ["Yes", "No"], next: [7, 8] },
-      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] },
-      { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] },
-      { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] },
-      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] },
-      { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] },
-      { question: "Does the collaborator have well-developed sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] },
-      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] },
-      { question: "Insert technology-specific questions here", options: [], next: [-1] },
-      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] },
-      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 17] },
-      { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] },
-      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] },
-      { question: "Insert more ingredient-specific questions here", options: [], next: [-1] },
-      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] }
-    ];
-
+    const questions = [  
+      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] }, // 0
+      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] }, // 1
+      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] }, // 2
+      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] }, // 3
+      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] }, // 4
+      { question: "Has the technology/product been done by someone else?", options: ["Yes", "No"], next: [7, 8] }, // 5
+      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] }, // 6
+      { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] }, // 7
+      { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] }, // 8
+      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] }, // 9
+      { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] }, // 10
+      { question: "Is the collaborator aligned with environmental and social sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] }, // 11
+      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] }, // 12
+      { question: "Is the technology currently operational?", options: ["Yes", "No"], next: [18, 19] }, // 13
+      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] }, // 14
+      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 23] }, // 15
+      { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] }, // 16
+      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] }, // 17
+      { question: "Is it patented or protected?", options: ["Yes", "No"], next: [20, 21] }, // 18
+      { question: "Is there a working prototype or demo available?", options: ["Yes", "No"], next: [18, 1] }, // 19
+      { question: "Does the company have the capacity to scale with Puratos?", options: ["Yes", "No"], next: [23, 22] }, // 20
+      { question: "Is there a plan in place to patent or protect it?", options: ["Yes", "No"], next: [20, 1] }, // 21
+      { question: "Is the collaborator open to co-development?", options: ["Yes", "No"], next: [23, 1] }, // 22
+      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] } // 23
+    ]; // Keep your full questions array here
     let currentQuestionIndex = 0;
     let history = [];
     let decisions = [];
@@ -224,48 +209,38 @@
     }
 
     function renderQuestion() {
-    const currentQuestion = questions[currentQuestionIndex];
-    const optionsContainer = document.getElementById('options');
-    const notesBox = document.getElementById('notes');
-    const container = document.getElementById('container');
-  
-    // Set current question HTML
-    document.getElementById('question').innerHTML = currentQuestion.question;
-    optionsContainer.innerHTML = '';
-  
-    // Save current notes
-    if (notesBox) {
-      notesBox.value = notesMap[currentQuestionIndex] || '';
+      const currentQuestion = questions[currentQuestionIndex];
+      const optionsContainer = document.getElementById('options');
+      const notesBox = document.getElementById('notes');
+
+      document.getElementById('question').innerHTML = currentQuestion.question;
+      optionsContainer.innerHTML = '';
+
+      if (notesBox) {
+        notesBox.value = notesMap[currentQuestionIndex] || '';
+      }
+
+      const isEnd = currentQuestion.next.length === 1 && currentQuestion.next[0] === -1;
+      if (isEnd) {
+        document.getElementById('downloadDocxBtn').style.display = 'block';
+        return;
+      }
+
+      if (currentQuestion.options.length > 0) {
+        optionsContainer.style.display = 'flex';
+        currentQuestion.options.forEach((option, index) => {
+          const button = document.createElement('button');
+          button.className = 'btn';
+          button.textContent = option;
+          button.onclick = () => nextQuestion(index);
+          optionsContainer.appendChild(button);
+        });
+      } else {
+        optionsContainer.style.display = 'none';
+      }
+
+      updateProgressBar();
     }
-  
-    // Check if terminal (GO or NO-GO)
-    const isEnd =
-      currentQuestion.next.length === 1 &&
-      currentQuestion.next[0] === -1;
-  
-    if (isEnd) {
-      // Show summary directly
-      showSummary();
-      return;
-    }
-
-  // Otherwise render options
-  if (currentQuestion.options.length > 0) {
-    optionsContainer.style.display = 'flex';
-    currentQuestion.options.forEach((option, index) => {
-      const button = document.createElement('button');
-      button.className = 'btn';
-      button.textContent = option;
-      button.onclick = () => nextQuestion(index);
-      optionsContainer.appendChild(button);
-    });
-  } else {
-    optionsContainer.style.display = 'none';
-  }
-
-  updateProgressBar();
-}
-
 
     function nextQuestion(optionIndex) {
       const currentQuestion = questions[currentQuestionIndex];
@@ -276,13 +251,14 @@
         notes: document.getElementById('notes')?.value || ""
       });
       notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
+
       const nextIndex = currentQuestion.next[optionIndex];
       if (nextIndex !== -1) {
         history.push(currentQuestionIndex);
         currentQuestionIndex = nextIndex;
         renderQuestion();
       } else {
-        showSummary();
+        document.getElementById('downloadDocxBtn').style.display = 'block';
       }
     }
 
@@ -311,37 +287,37 @@
       document.getElementById('progressBar').style.width = `${progressPercent}%`;
     }
 
-    function showSummary() {
-    const container = document.getElementById('container');
-    container.innerHTML = `
-      <div class="inner-title">Your session is complete.</div>
-      <button class="btn download-btn" onclick="downloadSummary()">Download Summary</button>
-    `;
-    }
+    function downloadDocx() {
+      const { Document, Packer, Paragraph, TextRun } = window.docx;
 
+      const doc = new Document();
+      const children = [];
 
-    function downloadSummary() {
-      let content = 'Your Decision Tree:\n\n';
       decisions.forEach((step, index) => {
-        content += `Q${index + 1}: ${step.question}\n`;
-        content += `→ Answer: ${step.answer}\n`;
-        if (step.notes) {
-          content += `→ Notes: ${step.notes}\n`;
-        }
-        content += '\n';
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: `Q${index + 1}: ${step.question}`, bold: true }),
+              new TextRun({ text: `\n→ Answer: ${step.answer}` }),
+              ...(step.notes ? [new TextRun({ text: `\n→ Notes: ${step.notes}` })] : []),
+              new TextRun("\n")
+            ],
+          })
+        );
       });
 
-      const blob = new Blob([content], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'decision-tree-summary.txt';
-      link.click();
-    }
+      doc.addSection({ children });
 
+      Packer.toBlob(doc).then(blob => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "GoNoGo_Summary.docx";
+        link.click();
+      });
+    }
 
     document.getElementById('returnBtn').onclick = returnQuestion;
     document.getElementById('startOverBtn').onclick = startOver;
-
     renderQuestion();
   </script>
 </body>
