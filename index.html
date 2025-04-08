@@ -76,7 +76,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-top: 100px; /* Gives space for top bar and logo */
+      padding-top: 100px; /* Space for top bar and logo */
     }
 
     .container {
@@ -123,11 +123,25 @@
       gap: 20px;
       flex-wrap: wrap;
     }
+
+    .notes-section {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .notes-section textarea {
+      width: 100%;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      box-sizing: border-box;
+    }
   </style>
 </head>
 <body>
-
-  <!-- Transparent Top Bar -->
   <div class="top-bar">
     <div class="top-left">
       <img class="logo" src="puratos-logo.jpeg" alt="Puratos Logo" />
@@ -138,7 +152,6 @@
     </div>
   </div>
 
-  <!-- Centered Question Area -->
   <div class="main-content">
     <div class="container" id="container">
       <div class="progress-bar-container">
@@ -147,103 +160,123 @@
       <div class="inner-title">Go-No-Go System</div>
       <div class="question" id="question">Loading question...</div>
       <div class="options" id="options"></div>
+      <div class="notes-section">
+        <label for="notes">Your Notes:</label><br>
+        <textarea id="notes" rows="3" placeholder="Optional comments..."></textarea>
+      </div>
     </div>
   </div>
 
-  <!-- JS Logic -->
   <script>
-  const questions = [
-    { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
-    { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] },
-    { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] },
-    { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] },
-    { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] },
-    { question: "Has the technology been done by someone else?", options: ["Yes", "No"], next: [7, 8] },
-    { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] },
-    { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] },
-    { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] },
-    { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] },
-    { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] },
-    { question: "Does the collaborator have well-developed sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] },
-    { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] },
-    { question: "Insert technology-specific questions here", options: [], next: [-1] },
-    { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] },
-    { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 17] },
-    { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] },
-    { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] },
-    { question: "Insert more ingredient-specific questions here", options: [], next: [-1] },
-    { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] }
-  ];
+    const questions = [...]; // Keep original questions array here
+    let currentQuestionIndex = 0;
+    let history = [];
+    let decisions = [];
+    let notesMap = {};
 
-  let currentQuestionIndex = 0;
-  let history = [];
+    function stripHTML(html) {
+      const div = document.createElement("div");
+      div.innerHTML = html;
+      return div.textContent || div.innerText || "";
+    }
 
-  function renderQuestion() {
-    const currentQuestion = questions[currentQuestionIndex];
-    document.getElementById('question').innerHTML = currentQuestion.question;
+    function renderQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById('question').innerHTML = currentQuestion.question;
+      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+      if (currentQuestion.options.length > 0) {
+        optionsContainer.style.display = 'flex';
+        currentQuestion.options.forEach((option, index) => {
+          const button = document.createElement('button');
+          button.className = 'btn';
+          button.textContent = option;
+          button.onclick = () => nextQuestion(index);
+          optionsContainer.appendChild(button);
+        });
+      } else {
+        optionsContainer.style.display = 'none';
+      }
+      document.getElementById('notes').value = notesMap[currentQuestionIndex] || '';
+      updateProgressBar();
+    }
 
-    const optionsContainer = document.getElementById('options');
-    optionsContainer.innerHTML = '';
-
-    if (currentQuestion.options.length > 0) {
-      optionsContainer.style.display = 'flex';
-      currentQuestion.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.className = 'btn';
-        button.textContent = option;
-        button.onclick = () => nextQuestion(index);
-        optionsContainer.appendChild(button);
+    function nextQuestion(optionIndex) {
+      const currentQuestion = questions[currentQuestionIndex];
+      const answer = currentQuestion.options[optionIndex];
+      decisions.push({
+        question: stripHTML(currentQuestion.question),
+        answer: answer,
+        notes: document.getElementById('notes')?.value || ""
       });
-    } else {
-      optionsContainer.style.display = 'none';
+      notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
+      const nextIndex = currentQuestion.next[optionIndex];
+      if (nextIndex !== -1) {
+        history.push(currentQuestionIndex);
+        currentQuestionIndex = nextIndex;
+        renderQuestion();
+      } else {
+        showSummary();
+      }
     }
 
-    updateProgressBar();
-  }
+    function returnQuestion() {
+      notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
+      if (history.length > 0) {
+        currentQuestionIndex = history.pop();
+        renderQuestion();
+      }
+    }
 
-  function nextQuestion(optionIndex) {
-    history.push(currentQuestionIndex);
-    const nextIndex = questions[currentQuestionIndex].next[optionIndex];
-    if (nextIndex !== -1) {
-      currentQuestionIndex = nextIndex;
+    function startOver() {
+      history = [];
+      currentQuestionIndex = 0;
+      decisions = [];
+      notesMap = {};
       renderQuestion();
     }
-  }
 
-  function returnQuestion() {
-    if (history.length > 0) {
-      currentQuestionIndex = history.pop();
-      renderQuestion();
+    function updateProgressBar() {
+      const totalSteps = questions.length;
+      const isTerminal = questions[currentQuestionIndex].next.length === 1 && questions[currentQuestionIndex].next[0] === -1;
+      const completedSteps = isTerminal ? totalSteps : Math.min(history.length + 1, totalSteps);
+      const progressPercent = (completedSteps / totalSteps) * 100;
+      document.getElementById('progressBar').style.width = `${progressPercent}%`;
     }
-  }
 
-  function startOver() {
-    history = [];
-    currentQuestionIndex = 0;
+    function showSummary() {
+      const container = document.getElementById('container');
+      container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul><button class="btn" onclick="downloadSummary()">Download Summary</button>`;
+      const list = document.getElementById('decisionTree');
+      list.style.textAlign = "left";
+      decisions.forEach((step, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer}` + (step.notes ? `<br><strong>Notes:</strong> ${step.notes}` : "");
+        list.appendChild(li);
+      });
+    }
+
+    function downloadSummary() {
+      let content = 'Your Decision Tree:\n\n';
+      decisions.forEach((step, index) => {
+        content += `Q${index + 1}: ${step.question}\n`;
+        content += `→ Answer: ${step.answer}\n`;
+        if (step.notes) {
+          content += `→ Notes: ${step.notes}\n`;
+        }
+        content += '\n';
+      });
+      const blob = new Blob([content], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'decision-tree-summary.txt';
+      link.click();
+    }
+
+    document.getElementById('returnBtn').onclick = returnQuestion;
+    document.getElementById('startOverBtn').onclick = startOver;
+
     renderQuestion();
-  }
-
-  function updateProgressBar() {
-    const totalSteps = questions.length;
-
-    const isTerminal =
-      questions[currentQuestionIndex].next.length === 1 &&
-      questions[currentQuestionIndex].next[0] === -1;
-
-    const completedSteps = isTerminal
-      ? totalSteps
-      : Math.min(history.length + 1, totalSteps);
-
-    const progressPercent = (completedSteps / totalSteps) * 100;
-    document.getElementById('progressBar').style.width = `${progressPercent}%`;
-  }
-
-  document.getElementById('returnBtn').onclick = returnQuestion;
-  document.getElementById('startOverBtn').onclick = startOver;
-
-  renderQuestion();
-</script>
-
-
+  </script>
 </body>
 </html>
