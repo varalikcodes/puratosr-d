@@ -246,7 +246,7 @@
       updateProgressBar();
     }
 
-    function nextQuestion(optionIndex) {
+  function nextQuestion(optionIndex) {
       const currentQuestion = questions[currentQuestionIndex];
       const answer = currentQuestion.options[optionIndex];
       decisions.push({
@@ -255,7 +255,19 @@
         notes: document.getElementById('notes')?.value || ""
       });
       notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
+    
       const nextIndex = currentQuestion.next[optionIndex];
+    
+      // 👉 Check for NO-GO or GO screen
+      const isEndScreen = nextIndex !== -1 && (
+        stripHTML(questions[nextIndex].question).toLowerCase().includes("no-go") ||
+        stripHTML(questions[nextIndex].question).toLowerCase().includes("go!")
+      );
+    
+      if (isEndScreen) {
+        document.getElementById('downloadDocxBtn').style.display = "block";
+      }
+    
       if (nextIndex !== -1) {
         history.push(currentQuestionIndex);
         currentQuestionIndex = nextIndex;
@@ -264,6 +276,7 @@
         showSummary();
       }
     }
+
 
     function returnQuestion() {
       notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
