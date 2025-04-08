@@ -71,27 +71,21 @@
     }
 
     .main-content {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-top: 100px;
-        position: relative; /* <-- ADD THIS */
-      }
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 100px;
+    }
 
-
-     .container {
+    .container {
       background: rgba(255, 255, 255, 0.85);
       border-radius: 16px;
       padding: 30px;
       width: 400px;
-      text-align: center;       /* This centers text */
+      text-align: center;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      display: flex;            /* Add this */
-      flex-direction: column;   /* Stack vertically */
-      align-items: center;      /* ⬅️ This centers child elements horizontally */
-  }
-
+    }
 
     .progress-bar-container {
       width: 100%;
@@ -194,34 +188,30 @@
     </div>
   </div>
 
-  <button id="downloadDocxBtn" class="download-btn" onclick="downloadBoth()">Download Summary</button>
+  <button id="downloadDocxBtn" class="download-btn" onclick="downloadDocx()">Download Summary</button>
 
   <script>
     const questions = [
-      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] }, // 0
-      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] }, // 1
-      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] }, // 2
-      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] }, // 3
-      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] }, // 4
-      { question: "Has the technology/product been done by someone else?", options: ["Yes", "No"], next: [7, 8] }, // 5
-      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] }, // 6
-      { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] }, // 7
-      { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] }, // 8
-      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] }, // 9
-      { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] }, // 10
-      { question: "Is the collaborator aligned with environmental and social sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] }, // 11
-      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] }, // 12
-      { question: "Is the technology currently operational?", options: ["Yes", "No"], next: [18, 19] }, // 13
-      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] }, // 14
-      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 23] }, // 15
-      { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] }, // 16
-      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] }, // 17
-      { question: "Is it patented or protected?", options: ["Yes", "No"], next: [20, 21] }, // 18
-      { question: "Is there a working prototype or demo available?", options: ["Yes", "No"], next: [18, 1] }, // 19
-      { question: "Does the company have the capacity to scale with Puratos?", options: ["Yes", "No"], next: [23, 22] }, // 20
-      { question: "Is there a plan in place to patent or protect it?", options: ["Yes", "No"], next: [20, 1] }, // 21
-      { question: "Is the collaborator open to co-development?", options: ["Yes", "No"], next: [23, 1] }, // 22
-      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] } // 23
+      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
+      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] },
+      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] },
+      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] },
+      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] },
+      { question: "Has the technology been done by someone else?", options: ["Yes", "No"], next: [7, 8] },
+      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] },
+      { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] },
+      { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] },
+      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] },
+      { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] },
+      { question: "Does the collaborator have well-developed sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] },
+      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] },
+      { question: "Insert technology-specific questions here", options: [], next: [-1] },
+      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] },
+      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 17] },
+      { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] },
+      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] },
+      { question: "Insert more ingredient-specific questions here", options: [], next: [-1] },
+      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] }
     ];
 
     let currentQuestionIndex = 0;
@@ -327,57 +317,28 @@
         list.appendChild(li);
       });
     }
-    function downloadTxt() {
-      let content = 'Your Decision Tree:\n\n';
-    
-      decisions.forEach((step, index) => {
-        const isLast = index === decisions.length - 1;
-        const prefix = index === 0 ? '' : '│   '.repeat(index - 1);
-        const questionBranch = index === 0 ? '├── ' : `${prefix}├── Q: `;
-        const answerBranch = isLast ? `${prefix}└── A: ` : `${prefix}│   └── A: `;
-    
-        content += `${questionBranch}${step.question}\n`;
-        content += `${answerBranch}${step.answer}\n`;
-    
-        if (step.notes) {
-          content += `${prefix}│       (Notes: ${step.notes})\n`;
-        }
-      });
-    
-      const blob = new Blob([content], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'decision-summary.txt';
-      link.click();
-    }
 
     async function downloadDocx() {
-    const { Document, Packer, Paragraph, TextRun } = window.docx;
-    const doc = new Document();
-    doc.addSection({
-      properties: {},
-      children: decisions.map(step => new Paragraph({
-        children: [
-          new TextRun({ text: "Q: " + step.question, bold: true }),
-          new TextRun({ text: "\nA: " + step.answer, break: 1 }),
-          ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
-          new TextRun({ text: "\n", break: 1 })
-        ]
-      }))
-    });
-  
-    const blob = await Packer.toBlob(doc);
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = "decision-summary.docx";
-    link.click();
-  }
+      const { Document, Packer, Paragraph, TextRun } = window.docx;
+      const doc = new Document();
+      doc.addSection({
+        properties: {},
+        children: decisions.map(step => new Paragraph({
+          children: [
+            new TextRun({ text: "Q: " + step.question, bold: true }),
+            new TextRun({ text: "\nA: " + step.answer, break: 1 }),
+            ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
+            new TextRun({ text: "\n", break: 1 })
+          ]
+        }))
+      });
 
-  function downloadBoth() {
-    downloadDocx();
-    downloadTxt();
-  }
-
+      const blob = await Packer.toBlob(doc);
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = "decision-summary.docx";
+      link.click();
+    }
 
     document.getElementById('returnBtn').onclick = returnQuestion;
     document.getElementById('startOverBtn').onclick = startOver;
