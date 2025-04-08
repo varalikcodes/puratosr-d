@@ -139,26 +139,23 @@
     }
 
   .download-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-    background-color: #800000;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 30px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    transition: background-color 0.3s, transform 0.2s;
-  }
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 30px;
+  background-color: #800000;
+  color: white;
+  padding: 12px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-  .download-btn:hover {
-    background-color: #660000;
-    transform: scale(1.05);
-  }
+.download-btn:hover {
+  background-color: #660000;
+  transform: scale(1.05);
+}
 
 </style>
 </head>
@@ -315,39 +312,32 @@
     }
 
     function showSummary() {
-      document.getElementById('downloadDocxBtn').style.display = "block";
-      const container = document.getElementById('container');
-      container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>`;
-      const list = document.getElementById('decisionTree');
-      list.style.textAlign = "left";
-      decisions.forEach((step, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `<strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer}` + (step.notes ? `<br><strong>Notes:</strong> ${step.notes}` : "");
-        list.appendChild(li);
-      });
+    const container = document.getElementById('container');
+    container.innerHTML = `
+      <div class="inner-title">Your session is complete.</div>
+      <button class="btn download-btn" onclick="downloadSummary()">Download Summary</button>
+    `;
     }
 
-    async function downloadDocx() {
-      const { Document, Packer, Paragraph, TextRun } = window.docx;
-      const doc = new Document();
-      doc.addSection({
-        properties: {},
-        children: decisions.map(step => new Paragraph({
-          children: [
-            new TextRun({ text: "Q: " + step.question, bold: true }),
-            new TextRun({ text: "\nA: " + step.answer, break: 1 }),
-            ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
-            new TextRun({ text: "\n", break: 1 })
-          ]
-        }))
+
+    function downloadSummary() {
+      let content = 'Your Decision Tree:\n\n';
+      decisions.forEach((step, index) => {
+        content += `Q${index + 1}: ${step.question}\n`;
+        content += `→ Answer: ${step.answer}\n`;
+        if (step.notes) {
+          content += `→ Notes: ${step.notes}\n`;
+        }
+        content += '\n';
       });
 
-      const blob = await Packer.toBlob(doc);
+      const blob = new Blob([content], { type: 'text/plain' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = "decision-summary.docx";
+      link.download = 'decision-tree-summary.txt';
       link.click();
     }
+
 
     document.getElementById('returnBtn').onclick = returnQuestion;
     document.getElementById('startOverBtn').onclick = startOver;
