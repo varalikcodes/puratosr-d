@@ -168,7 +168,28 @@
   </div>
 
   <script>
-    const questions = [...]; // Keep original questions array here
+    const questions =[
+  { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
+  { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] },
+  { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] },
+  { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] },
+  { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] },
+  { question: "Has the technology been done by someone else?", options: ["Yes", "No"], next: [7, 8] },
+  { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] },
+  { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] },
+  { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] },
+  { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] },
+  { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] },
+  { question: "Does the collaborator have well-developed sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] },
+  { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] },
+  { question: "Insert technology-specific questions here", options: [], next: [-1] },
+  { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] },
+  { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 17] },
+  { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] },
+  { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] },
+  { question: "Insert more ingredient-specific questions here", options: [], next: [-1] },
+  { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] }
+];// Keep original questions array here
     let currentQuestionIndex = 0;
     let history = [];
     let decisions = [];
