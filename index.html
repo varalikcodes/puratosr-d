@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Go-No-Go System</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.2/docx.umd.min.js"></script>
@@ -13,9 +13,9 @@
       height: 100vh;
       background: url('dudethisimage.png') no-repeat center center fixed;
       background-size: cover;
+      color: #333;
       display: flex;
       flex-direction: column;
-      color: #333;
     }
 
     .top-bar {
@@ -46,6 +46,7 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
       transition: all 0.2s ease;
     }
 
@@ -84,7 +85,19 @@
       height: 100%;
       background-color: #800000;
       width: 0%;
-      transition: width 0.2s ease;
+      transition: width 0.4s ease;
+    }
+
+    .inner-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #800000;
+      margin-bottom: 10px;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
     }
 
     .options {
@@ -92,16 +105,21 @@
       gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    .notes-section {
+      text-align: left;
     }
 
     textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 15px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
       border-radius: 10px;
       border: 1px solid #ccc;
-      font-family: 'Montserrat', sans-serif;
+      resize: vertical;
     }
 
     #downloadDocxBtn {
@@ -126,9 +144,13 @@
       <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
       </div>
-      <div id="question" class="question"></div>
+      <div class="inner-title" id="title">Go-No-Go System</div>
+      <div id="question" class="question">Loading...</div>
       <div id="options" class="options"></div>
-      <textarea id="notes" rows="3" placeholder="Optional notes..."></textarea>
+      <div class="notes-section">
+        <label for="notes">Your Notes:</label><br>
+        <textarea id="notes" rows="3" placeholder="Optional comments..."></textarea>
+      </div>
     </div>
   </div>
 
@@ -165,14 +187,14 @@
 
     const stripHTML = html => new DOMParser().parseFromString(html, 'text/html').body.textContent || "";
 
-    const renderQuestion = () => {
+    function renderQuestion() {
       const q = questions[currentQuestionIndex];
       document.getElementById('question').innerHTML = q.question;
-      const optionsContainer = document.getElementById('options');
-      optionsContainer.innerHTML = '';
       document.getElementById('notes').value = notesMap[currentQuestionIndex] || '';
+      document.getElementById('options').innerHTML = '';
 
-      if (q.next.length === 1 && q.next[0] === -1) {
+      const isEnd = q.next.length === 1 && q.next[0] === -1;
+      if (isEnd) {
         document.getElementById('downloadDocxBtn').style.display = 'block';
         return;
       }
@@ -182,51 +204,52 @@
         btn.textContent = opt;
         btn.className = 'btn';
         btn.onclick = () => nextQuestion(i);
-        optionsContainer.appendChild(btn);
+        document.getElementById('options').appendChild(btn);
       });
 
       updateProgressBar();
-    };
+    }
 
-    const nextQuestion = i => {
+    function nextQuestion(index) {
       const q = questions[currentQuestionIndex];
       decisions.push({
         question: stripHTML(q.question),
-        answer: q.options[i],
+        answer: q.options[index],
         notes: document.getElementById('notes').value.trim()
       });
       notesMap[currentQuestionIndex] = document.getElementById('notes').value.trim();
-      const nextIdx = q.next[i];
+      const nextIdx = q.next[index];
       if (nextIdx !== -1) {
         history.push(currentQuestionIndex);
         currentQuestionIndex = nextIdx;
         renderQuestion();
       } else {
         document.getElementById('downloadDocxBtn').style.display = 'block';
+        updateProgressBar();
       }
-    };
+    }
 
-    const returnQuestion = () => {
+    function returnQuestion() {
       notesMap[currentQuestionIndex] = document.getElementById('notes').value.trim();
       if (history.length > 0) {
         currentQuestionIndex = history.pop();
         renderQuestion();
       }
-    };
+    }
 
-    const startOver = () => {
+    function startOver() {
       history = [];
       currentQuestionIndex = 0;
       decisions = [];
       notesMap = {};
       document.getElementById('downloadDocxBtn').style.display = 'none';
       renderQuestion();
-    };
+    }
 
-    const updateProgressBar = () => {
+    function updateProgressBar() {
       const percent = ((history.length + 1) / questions.length) * 100;
       document.getElementById('progressBar').style.width = `${percent}%`;
-    };
+    }
 
     function downloadDocx() {
       const { Document, Packer, Paragraph, TextRun } = window.docx;
