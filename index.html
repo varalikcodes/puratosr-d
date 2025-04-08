@@ -1,71 +1,206 @@
-resize: vertical;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Industry & Startups Collaboration Go-No-Go System</title>
 
+  <!-- Font + Docx Library -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.2/docx.umd.js"></script>
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      height: 100vh;
+      background: url('dudethisimage.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+    }
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo {
+      height: 120px;
+      margin-top: 20px;
+    }
+    .top-buttons {
+      display: flex;
+      gap: 10px;
+      margin-right: 40px;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      border: none;
+      background-color: #800000;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .btn:hover {
+      background-color: #660000;
+      transform: scale(1.05);
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 100px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      padding: 30px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background-color: #800000;
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 5px;
+    }
+    .inner-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #800000;
+      margin-bottom: 10px;
+    }
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .notes-section {
+      text-align: left;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      resize: vertical;
+    }
     .download-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 100;
+      border-radius: 30px;
       background-color: #800000;
       color: white;
-      border: none;
       padding: 12px 20px;
-      border-radius: 30px;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.95rem;
       cursor: pointer;
-      font-family: 'Montserrat', sans-serif;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      transition: 0.3s;
       display: none;
     }
-
     .download-btn:hover {
       background-color: #660000;
       transform: scale(1.05);
     }
   </style>
-  .download-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-    background-color: #800000;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 30px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    transition: background-color 0.3s, transform 0.2s;
-  }
-
-  .download-btn:hover {
-    background-color: #660000;
-    transform: scale(1.05);
-  }
-
-</style>
 </head>
-
 <body>
-@@ -188,7 +189,7 @@
-</div>
-</div>
+  <div class="top-bar">
+    <div class="top-left">
+      <img class="logo" src="puratos-logo.jpeg" alt="Puratos Logo" />
+    </div>
+    <div class="top-buttons">
+      <button id="returnBtn" class="btn">Return</button>
+      <button id="startOverBtn" class="btn">Start Over</button>
+    </div>
+  </div>
 
-  <button id="downloadDocxBtn" class="download-btn" onclick="downloadDocx()">Download Summary</button>
-  <button id="downloadDocxBtn" class="btn download-btn" onclick="downloadDocx()">Download Summary</button> 
+  <div class="main-content">
+    <div class="container" id="container">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="inner-title">Go-No-Go System</div>
+      <div class="question" id="question">Loading question...</div>
+      <div class="options" id="options"></div>
+      <div class="notes-section">
+        <label for="notes">Your Notes:</label><br>
+        <textarea id="notes" rows="3" placeholder="Optional comments..."></textarea>
+      </div>
+    </div>
+  </div>
 
-<script>
-const questions = [
-@@ -226,109 +227,132 @@
-}
+  <button id="downloadDocxBtn" class="btn download-btn" onclick="downloadDocx()">Download Summary</button>
 
-function renderQuestion() {
+  <script>
+    const questions = [...]; // Keep your full questions array here
+    let currentQuestionIndex = 0;
+    let history = [];
+    let decisions = [];
+    let notesMap = {};
+
+    function stripHTML(html) {
+      const div = document.createElement("div");
+      div.innerHTML = html;
+      return div.textContent || div.innerText || "";
+    }
+
+    function renderQuestion() {
       const currentQuestion = questions[currentQuestionIndex];
-      document.getElementById('question').innerHTML = currentQuestion.question;
       const optionsContainer = document.getElementById('options');
+      const notesBox = document.getElementById('notes');
+
+      document.getElementById('question').innerHTML = currentQuestion.question;
       optionsContainer.innerHTML = '';
+
+      if (notesBox) {
+        notesBox.value = notesMap[currentQuestionIndex] || '';
+      }
+
+      const isEnd = currentQuestion.next.length === 1 && currentQuestion.next[0] === -1;
+      if (isEnd) {
+        document.getElementById('downloadDocxBtn').style.display = 'block';
+        return;
+      }
+
       if (currentQuestion.options.length > 0) {
         optionsContainer.style.display = 'flex';
         currentQuestion.options.forEach((option, index) => {
@@ -78,134 +213,87 @@ function renderQuestion() {
       } else {
         optionsContainer.style.display = 'none';
       }
-      document.getElementById('notes').value = notesMap[currentQuestionIndex] || '';
+
       updateProgressBar();
-    const currentQuestion = questions[currentQuestionIndex];
-    const optionsContainer = document.getElementById('options');
-    const notesBox = document.getElementById('notes');
-    const container = document.getElementById('container');
-  
-    // Set current question HTML
-    document.getElementById('question').innerHTML = currentQuestion.question;
-    optionsContainer.innerHTML = '';
-  
-    // Save current notes
-    if (notesBox) {
-      notesBox.value = notesMap[currentQuestionIndex] || '';
     }
-  
-    // Check if terminal (GO or NO-GO)
-    const isEnd =
-      currentQuestion.next.length === 1 &&
-      currentQuestion.next[0] === -1;
-  
-    if (isEnd) {
-      // Show summary directly
-      showSummary();
-      return;
-}
 
-  // Otherwise render options
-  if (currentQuestion.options.length > 0) {
-    optionsContainer.style.display = 'flex';
-    currentQuestion.options.forEach((option, index) => {
-      const button = document.createElement('button');
-      button.className = 'btn';
-      button.textContent = option;
-      button.onclick = () => nextQuestion(index);
-      optionsContainer.appendChild(button);
-    });
-  } else {
-    optionsContainer.style.display = 'none';
-  }
+    function nextQuestion(optionIndex) {
+      const currentQuestion = questions[currentQuestionIndex];
+      const answer = currentQuestion.options[optionIndex];
+      decisions.push({
+        question: stripHTML(currentQuestion.question),
+        answer: answer,
+        notes: document.getElementById('notes')?.value || ""
+      });
+      notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
 
-  updateProgressBar();
-}
+      const nextIndex = currentQuestion.next[optionIndex];
+      if (nextIndex !== -1) {
+        history.push(currentQuestionIndex);
+        currentQuestionIndex = nextIndex;
+        renderQuestion();
+      } else {
+        document.getElementById('downloadDocxBtn').style.display = 'block';
+      }
+    }
 
+    function returnQuestion() {
+      notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
+      if (history.length > 0) {
+        currentQuestionIndex = history.pop();
+        renderQuestion();
+      }
+    }
 
-function nextQuestion(optionIndex) {
-const currentQuestion = questions[currentQuestionIndex];
-const answer = currentQuestion.options[optionIndex];
-decisions.push({
-question: stripHTML(currentQuestion.question),
-answer: answer,
-notes: document.getElementById('notes')?.value || ""
-});
-notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
-const nextIndex = currentQuestion.next[optionIndex];
-if (nextIndex !== -1) {
-history.push(currentQuestionIndex);
-currentQuestionIndex = nextIndex;
-renderQuestion();
-} else {
-showSummary();
-}
-}
+    function startOver() {
+      history = [];
+      currentQuestionIndex = 0;
+      decisions = [];
+      notesMap = {};
+      document.getElementById('downloadDocxBtn').style.display = "none";
+      renderQuestion();
+    }
 
-function returnQuestion() {
-notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
-if (history.length > 0) {
-currentQuestionIndex = history.pop();
-renderQuestion();
-}
-}
+    function updateProgressBar() {
+      const totalSteps = questions.length;
+      const isTerminal = questions[currentQuestionIndex].next.length === 1 && questions[currentQuestionIndex].next[0] === -1;
+      const completedSteps = isTerminal ? totalSteps : Math.min(history.length + 1, totalSteps);
+      const progressPercent = (completedSteps / totalSteps) * 100;
+      document.getElementById('progressBar').style.width = `${progressPercent}%`;
+    }
 
-function startOver() {
-history = [];
-currentQuestionIndex = 0;
-decisions = [];
-notesMap = {};
-document.getElementById('downloadDocxBtn').style.display = "none";
-renderQuestion();
-}
+    function downloadDocx() {
+      const { Document, Packer, Paragraph, TextRun } = window.docx;
 
-function updateProgressBar() {
-const totalSteps = questions.length;
-const isTerminal = questions[currentQuestionIndex].next.length === 1 && questions[currentQuestionIndex].next[0] === -1;
-const completedSteps = isTerminal ? totalSteps : Math.min(history.length + 1, totalSteps);
-const progressPercent = (completedSteps / totalSteps) * 100;
-document.getElementById('progressBar').style.width = `${progressPercent}%`;
-}
+      const doc = new Document();
+      const children = [];
 
-function showSummary() {
-document.getElementById('downloadDocxBtn').style.display = "block";
-const container = document.getElementById('container');
-container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>`;
-const list = document.getElementById('decisionTree');
-list.style.textAlign = "left";
-decisions.forEach((step, index) => {
-const li = document.createElement('li');
-li.innerHTML = `<strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer}` + (step.notes ? `<br><strong>Notes:</strong> ${step.notes}` : "");
-list.appendChild(li);
-});
-}
+      decisions.forEach((step, index) => {
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: `Q${index + 1}: ${step.question}`, bold: true }),
+              new TextRun({ text: `\n→ Answer: ${step.answer}` }),
+              ...(step.notes ? [new TextRun({ text: `\n→ Notes: ${step.notes}` })] : []),
+              new TextRun("\n")
+            ],
+          })
+        );
+      });
 
-async function downloadDocx() {
-const { Document, Packer, Paragraph, TextRun } = window.docx;
-const doc = new Document();
-doc.addSection({
-properties: {},
-children: decisions.map(step => new Paragraph({
-children: [
-new TextRun({ text: "Q: " + step.question, bold: true }),
-new TextRun({ text: "\nA: " + step.answer, break: 1 }),
-...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
-new TextRun({ text: "\n", break: 1 })
-]
-}))
-});
+      doc.addSection({ children });
 
-const blob = await Packer.toBlob(doc);
-const link = document.createElement('a');
-link.href = URL.createObjectURL(blob);
-link.download = "decision-summary.docx";
-link.click();
-}
+      Packer.toBlob(doc).then(blob => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "GoNoGo_Summary.docx";
+        link.click();
+      });
+    }
 
-document.getElementById('returnBtn').onclick = returnQuestion;
-document.getElementById('startOverBtn').onclick = startOver;
-
-renderQuestion();
-</script>
+    document.getElementById('returnBtn').onclick = returnQuestion;
+    document.getElementById('startOverBtn').onclick = startOver;
+    renderQuestion();
+  </script>
 </body>
 </html>
