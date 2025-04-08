@@ -336,31 +336,32 @@
     }
 
     async function downloadDocx() {
-      const { Document, Packer, Paragraph, TextRun } = window.docx;
-      const doc = new Document();
-      doc.addSection({
-        properties: {},
-        children: decisions.map(step => new Paragraph({
-          children: [
-            new TextRun({ text: "Q: " + step.question, bold: true }),
-            new TextRun({ text: "\nA: " + step.answer, break: 1 }),
-            ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
-            new TextRun({ text: "\n", break: 1 })
-          ]
-        }))
-      });
+    const { Document, Packer, Paragraph, TextRun } = window.docx;
+    const doc = new Document();
+    doc.addSection({
+      properties: {},
+      children: decisions.map(step => new Paragraph({
+        children: [
+          new TextRun({ text: "Q: " + step.question, bold: true }),
+          new TextRun({ text: "\nA: " + step.answer, break: 1 }),
+          ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
+          new TextRun({ text: "\n", break: 1 })
+        ]
+      }))
+    });
+  
+    const blob = await Packer.toBlob(doc);
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = "decision-summary.docx";
+    link.click();
+  }
 
-    function downloadBoth() {
-      downloadDocx();
-      downloadTxt();
-    }
+  function downloadBoth() {
+    downloadDocx();
+    downloadTxt();
+  }
 
-      const blob = await Packer.toBlob(doc);
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = "decision-summary.docx";
-      link.click();
-    }
 
     document.getElementById('returnBtn').onclick = returnQuestion;
     document.getElementById('startOverBtn').onclick = startOver;
