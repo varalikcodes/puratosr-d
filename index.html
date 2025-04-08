@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Industry & Startups Collaboration Go-No-Go System</title>
-  
-  <!-- Montserrat Font -->
+
+  <!-- Font + Docx Library -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.2/docx.umd.js"></script>
 
   <style>
     body {
@@ -27,7 +28,6 @@
       width: 100%;
       height: 70px;
       background: transparent;
-      backdrop-filter: none;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,7 +49,6 @@
     .top-buttons {
       display: flex;
       gap: 10px;
-      margin-left: auto;
       margin-right: 40px;
     }
 
@@ -122,25 +121,47 @@
       justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
     .notes-section {
-      margin-top: 20px;
       text-align: left;
     }
 
-    .notes-section textarea {
+    textarea {
       width: 100%;
-      border-radius: 10px;
       padding: 10px;
-      border: 1px solid #ccc;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.95rem;
+      border: 2px solid #ccc;
+      border-radius: 10px;
       resize: vertical;
-      box-sizing: border-box;
+    }
+
+    .download-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background-color: #800000;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      display: none;
+    }
+
+    .download-btn:hover {
+      background-color: #660000;
+      transform: scale(1.05);
     }
   </style>
 </head>
+
 <body>
   <div class="top-bar">
     <div class="top-left">
@@ -167,34 +188,32 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/docx@8.3.0/build/index.js"></script>
+  <button id="downloadDocxBtn" class="download-btn" onclick="downloadDocx()">Download Summary</button>
+
   <script>
-    const questions = [  
-      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] }, // 0
-      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] }, // 1
-      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] }, // 2
-      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] }, // 3
-      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] }, // 4
-      { question: "Has the technology/product been done by someone else?", options: ["Yes", "No"], next: [7, 8] }, // 5
-      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] }, // 6
-      { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] }, // 7
-      { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] }, // 8
-      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] }, // 9
-      { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] }, // 10
-      { question: "Is the collaborator aligned with environmental and social sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] }, // 11
-      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] }, // 12
-      { question: "Is the technology currently operational?", options: ["Yes", "No"], next: [18, 19] }, // 13
-      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] }, // 14
-      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 23] }, // 15
-      { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] }, // 16
-      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] }, // 17
-      { question: "Is it patented or protected?", options: ["Yes", "No"], next: [20, 21] }, // 18
-      { question: "Is there a working prototype or demo available?", options: ["Yes", "No"], next: [18, 1] }, // 19
-      { question: "Does the company have the capacity to scale with Puratos?", options: ["Yes", "No"], next: [23, 22] }, // 20
-      { question: "Is there a plan in place to patent or protect it?", options: ["Yes", "No"], next: [20, 1] }, // 21
-      { question: "Is the collaborator open to co-development?", options: ["Yes", "No"], next: [23, 1] }, // 22
-      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] } // 23
-    ]; // Keep original array here
+    const questions = [
+      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
+      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] },
+      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] },
+      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] },
+      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] },
+      { question: "Has the technology been done by someone else?", options: ["Yes", "No"], next: [7, 8] },
+      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] },
+      { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] },
+      { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] },
+      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] },
+      { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] },
+      { question: "Does the collaborator have well-developed sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] },
+      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] },
+      { question: "Insert technology-specific questions here", options: [], next: [-1] },
+      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] },
+      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 17] },
+      { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] },
+      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] },
+      { question: "Insert more ingredient-specific questions here", options: [], next: [-1] },
+      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] }
+    ];
+
     let currentQuestionIndex = 0;
     let history = [];
     let decisions = [];
@@ -259,6 +278,7 @@
       currentQuestionIndex = 0;
       decisions = [];
       notesMap = {};
+      document.getElementById('downloadDocxBtn').style.display = "none";
       renderQuestion();
     }
 
@@ -271,13 +291,9 @@
     }
 
     function showSummary() {
+      document.getElementById('downloadDocxBtn').style.display = "block";
       const container = document.getElementById('container');
-      container.innerHTML = `
-        <div class="inner-title">Your Decision Path</div>
-        <ul id="decisionTree"></ul>
-        <button class="btn" onclick="downloadSummary()">Download as TXT</button>
-        <button class="btn" onclick="downloadDocx()">Download as Word Doc</button>
-      `;
+      container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>`;
       const list = document.getElementById('decisionTree');
       list.style.textAlign = "left";
       decisions.forEach((step, index) => {
@@ -287,49 +303,26 @@
       });
     }
 
-    function downloadSummary() {
-      let content = 'Your Decision Tree:\n\n';
-      decisions.forEach((step, index) => {
-        content += `Q${index + 1}: ${step.question}\n`;
-        content += `→ Answer: ${step.answer}\n`;
-        if (step.notes) {
-          content += `→ Notes: ${step.notes}\n`;
-        }
-        content += '\n';
+    async function downloadDocx() {
+      const { Document, Packer, Paragraph, TextRun } = window.docx;
+      const doc = new Document();
+      doc.addSection({
+        properties: {},
+        children: decisions.map(step => new Paragraph({
+          children: [
+            new TextRun({ text: "Q: " + step.question, bold: true }),
+            new TextRun({ text: "\nA: " + step.answer, break: 1 }),
+            ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
+            new TextRun({ text: "\n", break: 1 })
+          ]
+        }))
       });
-      const blob = new Blob([content], { type: 'text/plain' });
+
+      const blob = await Packer.toBlob(doc);
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = 'decision-tree-summary.txt';
+      link.download = "decision-summary.docx";
       link.click();
-    }
-
-    function downloadDocx() {
-      const { Document, Packer, Paragraph, TextRun } = window.docx;
-
-      const doc = new Document({
-        sections: [{
-          properties: {},
-          children: decisions.map((step, index) => {
-            const elements = [
-              new Paragraph({ children: [new TextRun({ text: `Q${index + 1}: ${step.question}`, bold: true })] }),
-              new Paragraph(`→ Answer: ${step.answer}`)
-            ];
-            if (step.notes) {
-              elements.push(new Paragraph(`→ Notes: ${step.notes}`));
-            }
-            elements.push(new Paragraph(''));
-            return elements;
-          }).flat()
-        }]
-      });
-
-      Packer.toBlob(doc).then(blob => {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'decision-tree.docx';
-        link.click();
-      });
     }
 
     document.getElementById('returnBtn').onclick = returnQuestion;
