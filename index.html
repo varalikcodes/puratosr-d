@@ -20,7 +20,6 @@
       flex-direction: column;
     }
 
-    /* Transparent Top Bar */
     .top-bar {
       position: fixed;
       top: 0;
@@ -29,7 +28,6 @@
       height: 70px;
       background: transparent;
       backdrop-filter: none;
-      -webkit-backdrop-filter: none;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -44,8 +42,8 @@
     }
 
     .logo {
-      height: 180px;
-      margin-top: 80px;
+      height: 120px;
+      margin-top: 20px;
     }
 
     .top-buttons {
@@ -78,7 +76,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-top: 70px; /* Prevent overlap from top bar */
+      padding-top: 100px; /* Gives space for top bar and logo */
     }
 
     .container {
@@ -88,6 +86,23 @@
       width: 400px;
       text-align: center;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #800000;
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 5px;
     }
 
     .inner-title {
@@ -108,22 +123,6 @@
       gap: 20px;
       flex-wrap: wrap;
     }
-    .progress-bar-container {
-      width: 80%;
-      height: 10px;
-      background-color: #ddd;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background-color: #800000;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
-
   </style>
 </head>
 <body>
@@ -141,10 +140,10 @@
 
   <!-- Centered Question Area -->
   <div class="main-content">
-    <div class="progress-bar-container">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
     <div class="container" id="container">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
       <div class="inner-title">Go-No-Go System</div>
       <div class="question" id="question">Loading question...</div>
       <div class="options" id="options"></div>
@@ -198,21 +197,18 @@
       } else {
         optionsContainer.style.display = 'none';
       }
+
+      updateProgressBar();
     }
 
     function nextQuestion(optionIndex) {
+      history.push(currentQuestionIndex);
       const nextIndex = questions[currentQuestionIndex].next[optionIndex];
       if (nextIndex !== -1) {
         currentQuestionIndex = nextIndex;
         renderQuestion();
       }
     }
-
-    const originalNextQuestion = nextQuestion;
-    nextQuestion = function(optionIndex) {
-      history.push(currentQuestionIndex);
-      originalNextQuestion(optionIndex);
-    };
 
     function returnQuestion() {
       if (history.length > 0) {
@@ -227,16 +223,16 @@
       renderQuestion();
     }
 
-    document.getElementById('returnBtn').onclick = returnQuestion;
-    document.getElementById('startOverBtn').onclick = startOver;
-
     function updateProgressBar() {
       const totalSteps = questions.length;
-      const completedSteps = Object.keys(history).length + 1; // +1 for current
+      const completedSteps = Math.min(history.length + 1, totalSteps);
       const progressPercent = (completedSteps / totalSteps) * 100;
       document.getElementById('progressBar').style.width = `${progressPercent}%`;
     }
-    
+
+    document.getElementById('returnBtn').onclick = returnQuestion;
+    document.getElementById('startOverBtn').onclick = startOver;
+
     renderQuestion();
   </script>
 
