@@ -319,15 +319,19 @@
     }
     function downloadTxt() {
       let content = 'Your Decision Tree:\n\n';
-      let indent = '';
     
       decisions.forEach((step, index) => {
-        content += `${indent}• ${step.question}\n`;
-        content += `${indent}   ↳ ${step.answer}\n`;
+        const isLast = index === decisions.length - 1;
+        const prefix = index === 0 ? '' : '│   '.repeat(index - 1);
+        const questionBranch = index === 0 ? '├── ' : `${prefix}├── Q: `;
+        const answerBranch = isLast ? `${prefix}└── A: ` : `${prefix}│   └── A: `;
+    
+        content += `${questionBranch}${step.question}\n`;
+        content += `${answerBranch}${step.answer}\n`;
+    
         if (step.notes) {
-          content += `${indent}     (Notes: ${step.notes})\n`;
+          content += `${prefix}│       (Notes: ${step.notes})\n`;
         }
-        indent += '   '; // Increase indent each step
       });
     
       const blob = new Blob([content], { type: 'text/plain' });
@@ -336,7 +340,6 @@
       link.download = 'decision-summary.txt';
       link.click();
     }
-
 
     async function downloadDocx() {
     const { Document, Packer, Paragraph, TextRun } = window.docx;
