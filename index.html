@@ -188,7 +188,7 @@
     </div>
   </div>
 
-  <button id="downloadDocxBtn" class="download-btn" onclick="downloadDocx()">Download Summary</button>
+  <button id="downloadDocxBtn" class="download-btn" onclick="downloadBoth()">Download Summary</button>
 
   <script>
     const questions = [
@@ -317,6 +317,23 @@
         list.appendChild(li);
       });
     }
+    function downloadTxt() {
+      let content = 'Your Decision Tree:\n\n';
+      decisions.forEach((step, index) => {
+        content += `Q${index + 1}: ${step.question}\n`;
+        content += `→ Answer: ${step.answer}\n`;
+        if (step.notes) {
+          content += `→ Notes: ${step.notes}\n`;
+        }
+        content += '\n';
+      });
+    
+      const blob = new Blob([content], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'decision-summary.txt';
+      link.click();
+    }
 
     async function downloadDocx() {
       const { Document, Packer, Paragraph, TextRun } = window.docx;
@@ -332,6 +349,11 @@
           ]
         }))
       });
+
+    function downloadBoth() {
+      downloadDocx();
+      downloadTxt();
+    }
 
       const blob = await Packer.toBlob(doc);
       const link = document.createElement('a');
