@@ -247,44 +247,46 @@
     }
 
   function nextQuestion(optionIndex) {
-      const currentQuestion = questions[currentQuestionIndex];
-      const answer = currentQuestion.options[optionIndex];
-      decisions.push({
-        question: stripHTML(currentQuestion.question),
-        answer: answer,
-        notes: document.getElementById('notes')?.value || ""
-      });
-      notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
-    
-      const nextIndex = currentQuestion.next[optionIndex];
-    
-      // 👉 Check for NO-GO or GO screen
-      const isEndScreen = nextIndex !== -1 && (
-        stripHTML(questions[nextIndex].question).toLowerCase().includes("no-go") ||
-        stripHTML(questions[nextIndex].question).toLowerCase().includes("go!")
-      );
-    
-      if (isEndScreen) {
+    const currentQuestion = questions[currentQuestionIndex];
+    const answer = currentQuestion.options[optionIndex];
+    decisions.push({
+      question: stripHTML(currentQuestion.question),
+      answer: answer,
+      notes: document.getElementById('notes')?.value || ""
+    });
+    notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
+  
+    const nextIndex = currentQuestion.next[optionIndex];
+  
+    if (nextIndex !== -1) {
+      const nextQuestionText = stripHTML(questions[nextIndex].question).toLowerCase();
+  
+      const shouldShowDownload = ["no-go", "go!", "insert technology-specific questions here", "insert more ingredient-specific questions here"]
+        .some(text => nextQuestionText.includes(text));
+  
+      if (shouldShowDownload) {
         document.getElementById('downloadDocxBtn').style.display = "block";
       }
-    
-      if (nextIndex !== -1) {
-        history.push(currentQuestionIndex);
-        currentQuestionIndex = nextIndex;
-        renderQuestion();
-      } else {
-        showSummary();
-      }
+  
+      history.push(currentQuestionIndex);
+      currentQuestionIndex = nextIndex;
+      renderQuestion();
+    } else {
+      showSummary();
     }
+  }
 
 
-    function returnQuestion() {
-      notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
-      if (history.length > 0) {
-        currentQuestionIndex = history.pop();
-        renderQuestion();
-      }
+
+  function returnQuestion() {
+    notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
+  
+    if (history.length > 0) {
+      currentQuestionIndex = history.pop();
+      document.getElementById('downloadDocxBtn').style.display = "none"; // 👈 Hide on return
+      renderQuestion();
     }
+  }
 
     function startOver() {
       history = [];
