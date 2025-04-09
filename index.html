@@ -88,14 +88,46 @@
        }
  
  
-     .container {
-       background: rgba(255, 255, 255, 0.85);
-       border-radius: 16px;
-       padding: 30px;
-       width: 400px;
-       text-align: center;
-       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-     }
+    .container {
+     background: rgba(255, 255, 255, 0.85);
+     border-radius: 16px;
+     padding: 30px;
+     width: 400px;
+     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+     text-align: center;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+    }
+
+/* Already included, just making sure it's here */
+#question {
+  text-align: center;
+}
+
+/* Center notes label and textarea */
+.notes-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Optional: max width for textarea to avoid stretching */
+.notes-section textarea {
+  width: 100%;
+  max-width: 90%;
+  text-align: left;
+}
+
+/* Optional: ensure buttons are centered */
+.options {
+  justify-content: center;
+}
+
+    #question {
+            text-align: center;  /* 👈 Ensures even final outcomes stay centered */
+          }
  
      .progress-bar-container {
        width: 80%; /* smaller than the container width */
@@ -124,9 +156,12 @@
      }
 
      .question {
-       font-size: 1.2rem;
-       margin-bottom: 20px;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      text-align: center; /* 👈 Add this */
+      width: 100%;         /* 👈 Helps avoid shrinking */
      }
+
  
      .options {
        display: flex;
