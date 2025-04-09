@@ -71,12 +71,14 @@
      }
  
      .main-content {
-       flex: 1;
-       display: flex;
+       flex-direction: column;
        align-items: center;
        justify-content: center;
+       display: flex;
        padding-top: 100px;
+       gap: 20px;
      }
+
          flex: 1;
          display: flex;
          align-items: center;
@@ -96,11 +98,11 @@
      }
  
      .progress-bar-container {
-       width: 100%;
+       width: 80%; /* smaller than the container width */
        height: 8px;
        background-color: rgba(0, 0, 0, 0.1);
        border-radius: 5px;
-       margin-bottom: 20px;
+       margin: 0 auto 20px auto; /* center it + space below */
        overflow: hidden;
      }
  
@@ -182,10 +184,12 @@
    </div>
  
    <div class="main-content">
+    <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+   </div>
+
      <div class="container" id="container">
-       <div class="progress-bar-container">
-         <div class="progress-bar" id="progressBar"></div>
-       </div>
+      
        <div class="inner-title">Go-No-Go System</div>
        <div class="question" id="question">Loading question...</div>
        <div class="options" id="options"></div>
