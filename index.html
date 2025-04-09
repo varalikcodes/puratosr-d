@@ -89,16 +89,19 @@
  
  
     .container {
-     background: rgba(255, 255, 255, 0.85);
-     border-radius: 16px;
-     padding: 30px;
-     width: 400px;
-     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-     text-align: center;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
+      background: rgba(255, 255, 255, 0.9);  /* white with slight transparency */
+      border-radius: 16px;
+      padding: 30px 25px;
+      width: fit-content; /* only as wide as its content */
+      max-width: 90vw;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      margin: 0 auto;  /* center horizontally */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
 
 /* Already included, just making sure it's here */
 #question {
@@ -113,11 +116,22 @@
   align-items: center;
 }
 
+.notes-section label {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
 /* Optional: max width for textarea to avoid stretching */
 .notes-section textarea {
   width: 100%;
-  max-width: 90%;
-  text-align: left;
+  max-width: 360px; /* matches container width or slightly smaller */
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  resize: vertical;
+  box-sizing: border-box;
 }
 
 /* Optional: ensure buttons are centered */
@@ -225,19 +239,18 @@
     <div class="progress-bar" id="progressBar"></div>
    </div>
 
-     <div class="container" id="container">
-      
-       <div class="inner-title">Go-No-Go System</div>
-       <div class="question" id="question">Loading question...</div>
-       <div class="options" id="options"></div>
-       <div class="notes-section">
-         <label for="notes">Your Notes:</label><br>
-         <textarea id="notes" rows="3" placeholder="Optional comments..."></textarea>
-       </div>
-     </div>
-   </div>
- 
-   <button id="downloadDocxBtn" class="download-btn" onclick="downloadBoth()">Download Summary</button>
+    <div class="container" id="container">
+    <div class="inner-title">Go-No-Go System</div>
+    <div class="question" id="question">Loading question...</div>
+    <div class="options" id="options"></div>
+    <div class="notes-section">
+      <label for="notes">Your Notes:</label><br>
+      <textarea id="notes" rows="3" placeholder="Optional comments..."></textarea>
+    </div>
+  </div>
+</div>
+
+  <button id="downloadDocxBtn" class="download-btn" onclick="downloadBoth()">Download Summary</button>
  
    <script>
      const questions = [
