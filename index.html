@@ -71,16 +71,21 @@
      }
  
      .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding-top: 100px;
-      gap: 20px;
-      position: relative;
-    }
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       display: flex;
+       padding-top: 100px;
+       gap: 20px;
+     }
 
+         flex: 1;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         padding-top: 100px;
+         position: relative; /* <-- ADD THIS */
+       }
  
  
     .container {
@@ -139,11 +144,11 @@
           }
  
      .progress-bar-container {
-       width: 200px; /* smaller than the container width */
-       height: 4px;
+       width: 80%; /* smaller than the container width */
+       height: 8px;
        background-color: rgba(0, 0, 0, 0.1);
        border-radius: 5px;
-       margin: 0 auto 10px auto; /* center it + space below */
+       margin: 0 auto 20px auto; /* center it + space below */
        overflow: hidden;
      }
  
@@ -363,18 +368,18 @@
        const isTerminal = questions[currentQuestionIndex].next.length === 1 && questions[currentQuestionIndex].next[0] === -1;
        const completedSteps = isTerminal ? totalSteps : Math.min(history.length + 1, totalSteps);
        const progressPercent = (completedSteps / totalSteps) * 100;
-       document.getElementById('progressBar').style.width = `${progressPercent}%`;
+       document.getElementById('progressBar').style.width = ${progressPercent}%;
      }
  
      function showSummary() {
        document.getElementById('downloadDocxBtn').style.display = "block";
        const container = document.getElementById('container');
-       container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>`;
+       container.innerHTML = <div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>;
        const list = document.getElementById('decisionTree');
        list.style.textAlign = "left";
        decisions.forEach((step, index) => {
          const li = document.createElement('li');
-         li.innerHTML = `<strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer}` + (step.notes ? `<br><strong>Notes:</strong> ${step.notes}` : "");
+         li.innerHTML = <strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer} + (step.notes ? <br><strong>Notes:</strong> ${step.notes} : "");
          list.appendChild(li);
        });
      }
@@ -384,14 +389,14 @@
        decisions.forEach((step, index) => {
          const isLast = index === decisions.length - 1;
          const prefix = index === 0 ? '' : '│   '.repeat(index - 1);
-         const questionBranch = index === 0 ? '├── ' : `${prefix}├── Q: `;
-         const answerBranch = isLast ? `${prefix}└── A: ` : `${prefix}│   └── A: `;
+         const questionBranch = index === 0 ? '├── ' : ${prefix}├── Q: ;
+         const answerBranch = isLast ? ${prefix}└── A:  : ${prefix}│   └── A: ;
  
-         content += `${questionBranch}${step.question}\n`;
-         content += `${answerBranch}${step.answer}\n`;
+         content += ${questionBranch}${step.question}\n;
+         content += ${answerBranch}${step.answer}\n;
  
          if (step.notes) {
-           content += `${prefix}│       (Notes: ${step.notes})\n`;
+           content += ${prefix}│       (Notes: ${step.notes})\n;
          }
        });
  
