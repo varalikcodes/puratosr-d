@@ -362,18 +362,18 @@
        const isTerminal = questions[currentQuestionIndex].next.length === 1 && questions[currentQuestionIndex].next[0] === -1;
        const completedSteps = isTerminal ? totalSteps : Math.min(history.length + 1, totalSteps);
        const progressPercent = (completedSteps / totalSteps) * 100;
-       document.getElementById('progressBar').style.width = ${progressPercent}%;
+       document.getElementById('progressBar').style.width = `${progressPercent}%`;
      }
  
      function showSummary() {
        document.getElementById('downloadDocxBtn').style.display = "block";
        const container = document.getElementById('container');
-       container.innerHTML = <div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>;
+       container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>`;
        const list = document.getElementById('decisionTree');
        list.style.textAlign = "left";
        decisions.forEach((step, index) => {
          const li = document.createElement('li');
-         li.innerHTML = <strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer} + (step.notes ? <br><strong>Notes:</strong> ${step.notes} : "");
+         li.innerHTML = `<strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer}` + (step.notes ? `<br><strong>Notes:</strong> ${step.notes}` : "");
          list.appendChild(li);
        });
      }
