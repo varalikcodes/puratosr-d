@@ -1,438 +1,368 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
-   <meta charset="UTF-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-   <title>Industry & Startups Collaboration Go-No-Go System</title>
- 
-   <!-- Font + Docx Library -->
-   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.2/docx.umd.js"></script>
- 
-   <style>
-     body {
-       font-family: 'Montserrat', sans-serif;
-       margin: 0;
-       height: 100vh;
-       background: url('dudethisimage.png') no-repeat center center fixed;
-       background-size: cover;
-       color: #333;
-       display: flex;
-       flex-direction: column;
-     }
- 
-     .top-bar {
-       position: fixed;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: 70px;
-       background: transparent;
-       display: flex;
-       align-items: center;
-       justify-content: space-between;
-       padding: 0 20px;
-       z-index: 100;
-     }
- 
-     .top-left {
-       display: flex;
-       align-items: center;
-       gap: 10px;
-     }
- 
-     .logo {
-       height: 120px;
-       margin-top: 20px;
-     }
- 
-     .top-buttons {
-       display: flex;
-       gap: 10px;
-       margin-right: 40px;
-     }
- 
-     .btn {
-       padding: 10px 20px;
-       font-size: 0.95rem;
-       border: none;
-       background-color: #800000;
-       color: white;
-       border-radius: 30px;
-       cursor: pointer;
-       transition: background-color 0.3s, transform 0.2s;
-       font-family: 'Montserrat', sans-serif;
-       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-     }
- 
-     .btn:hover {
-       background-color: #660000;
-       transform: scale(1.05);
-     }
- 
-     .main-content {
-       flex: 1;
-       flex-direction: column;
-       align-items: center;
-       justify-content: center;
-       display: flex;
-       padding-top: 100px;
-       gap: 20px;
-       position: relative; /* <-- ADD THIS */
-     }
- 
- 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Go-No-Go System</title>
+
+  <!-- Font + Docx Library -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.2/docx.umd.js"></script>
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      height: 100vh;
+      background: url('dudethisimage.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      height: 120px;
+      margin-top: 20px;
+    }
+
+    .top-buttons {
+      display: flex;
+      gap: 10px;
+      margin-right: 40px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      border: none;
+      background-color: #800000;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:hover {
+      background-color: #660000;
+      transform: scale(1.05);
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 120px;
+      gap: 20px;
+    }
+
+    .progress-bar-container {
+      width: 280px;
+      height: 6px;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #800000;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
     .container {
-      background: rgba(255, 255, 255, 0.75);  /* white with slight transparency */
+      background: rgba(255, 255, 255, 0.85);
       border-radius: 16px;
-      padding: 30px 25px;
-      width: fit-content; /* only as wide as its content */
+      padding: 30px;
+      width: fit-content;
       max-width: 90vw;
       text-align: center;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      margin: 0 auto;  /* center horizontally */
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
+    .inner-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #800000;
+      margin-bottom: 10px;
+    }
 
-/* Already included, just making sure it's here */
-#question {
-  text-align: center;
-}
-
-/* Center notes label and textarea */
-.notes-section {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.notes-section label {
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-/* Optional: max width for textarea to avoid stretching */
-.notes-section textarea {
-  width: 100%;
-  max-width: 360px; /* matches container width or slightly smaller */
-  padding: 10px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  resize: vertical;
-  box-sizing: border-box;
-}
-
-/* Optional: ensure buttons are centered */
-.options {
-  justify-content: center;
-}
-
-    #question {
-            text-align: center;  /* 👈 Ensures even final outcomes stay centered */
-          }
- 
-     .progress-bar-container {
-       width: 100px; /* smaller than the container width */
-       height: 6px;
-       background-color: rgba(0, 0, 0, 0.1);
-       border-radius: 5px;
-       margin: 0 auto 10px auto; /* center it + space below */
-       overflow: hidden;
-     }
- 
-     .progress-bar {
-       height: 100%;
-       background-color: #800000;
-       width: 0%;
-       transition: width 0.4s ease;
-       border-radius: 5px;
-     }
- 
-     .inner-title {
-       font-size: 1.5rem;
-       font-weight: 600;
-       color: #800000;
-       margin-bottom: 10px;
-       text-align: center;  /* 👈 Ensures center alignment */
-       width: 100%;          /* 👈 Makes it use full container width */
-     }
-
-     .question {
+    .question {
       font-size: 1.2rem;
       margin-bottom: 20px;
-      text-align: center; /* 👈 Add this */
-      width: 100%;         /* 👈 Helps avoid shrinking */
-     }
+      text-align: center;
+    }
 
- 
-     .options {
-       display: flex;
-       justify-content: center;
-       gap: 20px;
-       flex-wrap: wrap;
-       margin-bottom: 20px;
-     }
- 
-     .notes-section {
-       text-align: left;
-     }
- 
-     textarea {
-       width: 90%;
-       padding: 10px;
-       font-family: 'Montserrat', sans-serif;
-       font-size: 0.95rem;
-       border: 2px solid #ccc;
-       border-radius: 10px;
-       resize: vertical;
-     }
- 
-     .download-btn {
-       position: fixed;
-       bottom: 20px;
-       right: 20px;
-       z-index: 100;
-       background-color: #800000;
-       color: white;
-       border: none;
-       padding: 12px 20px;
-       border-radius: 30px;
-       font-size: 0.95rem;
-       cursor: pointer;
-       font-family: 'Montserrat', sans-serif;
-       box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-       display: none;
-     }
- 
-     .download-btn:hover {
-       background-color: #660000;
-       transform: scale(1.05);
-     }
-   </style>
- </head>
- 
- <body>
-   <div class="top-bar">
-     <div class="top-left">
-       <img class="logo" src="puratos-logo.jpeg" alt="Puratos Logo" />
-     </div>
-     <div class="top-buttons">
-       <button id="returnBtn" class="btn">Return</button>
-       <button id="startOverBtn" class="btn">Start Over</button>
-     </div>
-   </div>
- 
-   <div class="main-content">
-    <div class="progress-bar-container">
-    <div class="progress-bar" id="progressBar"></div>
-   </div>
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
 
-    <div class="container" id="container">
-    <div class="inner-title">Go-No-Go System</div>
-    <div class="question" id="question">Loading question...</div>
-    <div class="options" id="options"></div>
-    <div class="notes-section">
-      <label for="notes">Your Notes:</label><br>
-      <textarea id="notes" rows="3" placeholder="Optional comments..."></textarea>
+    .notes-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .notes-section label {
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 300px;
+      padding: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      resize: vertical;
+    }
+
+    .download-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background-color: #800000;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      display: none;
+    }
+
+    .download-btn:hover {
+      background-color: #660000;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="top-left">
+      <img class="logo" src="puratos-logo.jpeg" alt="Puratos Logo" />
+    </div>
+    <div class="top-buttons">
+      <button id="returnBtn" class="btn">Return</button>
+      <button id="startOverBtn" class="btn">Start Over</button>
     </div>
   </div>
-</div>
+
+  <div class="main-content">
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container" id="container">
+      <div class="inner-title">Go-No-Go System</div>
+      <div class="question" id="question">Loading question...</div>
+      <div class="options" id="options"></div>
+      <div class="notes-section">
+        <label for="notes">Your Notes:</label>
+        <textarea id="notes" rows="3" placeholder="Optional comments..."></textarea>
+      </div>
+    </div>
+  </div>
 
   <button id="downloadDocxBtn" class="download-btn" onclick="downloadBoth()">Download Summary</button>
- 
-   <script>
-     const questions = [
-       { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] }, // 0
-       { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] }, // 1
-       { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] }, // 2
-       { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] }, // 3
-       { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] }, // 4
-       { question: "Has the technology/product been done by someone else?", options: ["Yes", "No"], next: [7, 8] }, // 5
-       { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] }, // 6
-       { question: "Is the collaborator closer to commercialization or are they more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] }, // 7
-       { question: "Do they already have a contract in place with another company?", options: ["Yes", "No"], next: [1, 9] }, // 8
-       { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] }, // 9
-       { question: "Are they, or do they have a plan to be Scope 2 and 3 neutral?", options: ["Yes", "No"], next: [11, 1] }, // 10
-       { question: "Is the collaborator aligned with environmental and social sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] }, // 11
-       { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] }, // 12
-       { question: "Is the technology currently operational?", options: ["Yes", "No"], next: [18, 19] }, // 13
-       { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] }, // 14
-       { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 23] }, // 15
-       { question: "Does the collaborator have a plan to obtain certification?", options: ["Yes", "No"], next: [15, 1] }, // 16
-       { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] }, // 17
-       { question: "Is it patented or protected?", options: ["Yes", "No"], next: [20, 21] }, // 18
-       { question: "Is there a working prototype or demo available?", options: ["Yes", "No"], next: [18, 1] }, // 19
-       { question: "Does the company have the capacity to scale with Puratos?", options: ["Yes", "No"], next: [23, 22] }, // 20
-       { question: "Is there a plan in place to patent or protect it?", options: ["Yes", "No"], next: [20, 1] }, // 21
-       { question: "Is the collaborator open to co-development?", options: ["Yes", "No"], next: [23, 1] }, // 22
-       { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] } // 23
-     ];
- 
-     let currentQuestionIndex = 0;
-     let history = [];
-     let decisions = [];
-     let notesMap = {};
- 
-     function stripHTML(html) {
-       const div = document.createElement("div");
-       div.innerHTML = html;
-       return div.textContent || div.innerText || "";
-     }
- 
-     function renderQuestion() {
-       const currentQuestion = questions[currentQuestionIndex];
-       document.getElementById('question').innerHTML = currentQuestion.question;
-       const optionsContainer = document.getElementById('options');
-       optionsContainer.innerHTML = '';
-       if (currentQuestion.options.length > 0) {
-         optionsContainer.style.display = 'flex';
-         currentQuestion.options.forEach((option, index) => {
-           const button = document.createElement('button');
-           button.className = 'btn';
-           button.textContent = option;
-           button.onclick = () => nextQuestion(index);
-           optionsContainer.appendChild(button);
-         });
-       } else {
-         optionsContainer.style.display = 'none';
-       }
-       document.getElementById('notes').value = notesMap[currentQuestionIndex] || '';
-       updateProgressBar();
-     }
- 
-   function nextQuestion(optionIndex) {
-     const currentQuestion = questions[currentQuestionIndex];
-     const answer = currentQuestion.options[optionIndex];
-     decisions.push({
-       question: stripHTML(currentQuestion.question),
-       answer: answer,
-       notes: document.getElementById('notes')?.value || ""
-     });
-     notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
- 
-     const nextIndex = currentQuestion.next[optionIndex];
- 
-     if (nextIndex !== -1) {
-       const nextQuestionText = stripHTML(questions[nextIndex].question).toLowerCase();
- 
-       const shouldShowDownload = ["no-go", "go!", "insert technology-specific questions here", "insert more ingredient-specific questions here"]
-         .some(text => nextQuestionText.includes(text));
- 
-       if (shouldShowDownload) {
-         document.getElementById('downloadDocxBtn').style.display = "block";
-       }
- 
-       history.push(currentQuestionIndex);
-       currentQuestionIndex = nextIndex;
-       renderQuestion();
-     } else {
-       showSummary();
-     }
-   }
- 
- 
- 
-   function returnQuestion() {
-     notesMap[currentQuestionIndex] = document.getElementById('notes')?.value || "";
- 
-     if (history.length > 0) {
-       currentQuestionIndex = history.pop();
-       document.getElementById('downloadDocxBtn').style.display = "none"; // 👈 Hide on return
-       renderQuestion();
-     }
-   }
- 
-     function startOver() {
-       history = [];
-       currentQuestionIndex = 0;
-       decisions = [];
-       notesMap = {};
-       document.getElementById('downloadDocxBtn').style.display = "none";
-       renderQuestion();
-     }
- 
-     function updateProgressBar() {
-       const totalSteps = questions.length;
-       const isTerminal = questions[currentQuestionIndex].next.length === 1 && questions[currentQuestionIndex].next[0] === -1;
-       const completedSteps = isTerminal ? totalSteps : Math.min(history.length + 1, totalSteps);
-       const progressPercent = (completedSteps / totalSteps) * 100;
-       document.getElementById('progressBar').style.width = `${progressPercent}%`;
-     }
- 
-     function showSummary() {
-       document.getElementById('downloadDocxBtn').style.display = "block";
-       const container = document.getElementById('container');
-       container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>`;
-       const list = document.getElementById('decisionTree');
-       list.style.textAlign = "left";
-       decisions.forEach((step, index) => {
-         const li = document.createElement('li');
-         li.innerHTML = `<strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer}` + (step.notes ? `<br><strong>Notes:</strong> ${step.notes}` : "");
-         list.appendChild(li);
-       });
-     }
-     function downloadTxt() {
-       let content = 'Your Decision Tree:\n\n';
- 
-       decisions.forEach((step, index) => {
-         const isLast = index === decisions.length - 1;
-         const prefix = index === 0 ? '' : '│   '.repeat(index - 1);
-         const questionBranch = index === 0 ? '├── ' : ${prefix}├── Q: ;
-         const answerBranch = isLast ? ${prefix}└── A:  : ${prefix}│   └── A: ;
- 
-         content += ${questionBranch}${step.question}\n;
-         content += ${answerBranch}${step.answer}\n;
- 
-         if (step.notes) {
-           content += ${prefix}│       (Notes: ${step.notes})\n;
-         }
-       });
- 
-       const blob = new Blob([content], { type: 'text/plain' });
-       const link = document.createElement('a');
-       link.href = URL.createObjectURL(blob);
-       link.download = 'decision-summary.txt';
-       link.click();
-     }
- 
-     async function downloadDocx() {
-     const { Document, Packer, Paragraph, TextRun } = window.docx;
-     const doc = new Document();
-     doc.addSection({
-       properties: {},
-       children: decisions.map(step => new Paragraph({
-         children: [
-           new TextRun({ text: "Q: " + step.question, bold: true }),
-           new TextRun({ text: "\nA: " + step.answer, break: 1 }),
-           ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
-           new TextRun({ text: "\n", break: 1 })
-         ]
-       }))
-     });
- 
-     const blob = await Packer.toBlob(doc);
-     const link = document.createElement('a');
-     link.href = URL.createObjectURL(blob);
-     link.download = "decision-summary.docx";
-     link.click();
-   }
- 
-   function downloadBoth() {
-     downloadDocx();
-     downloadTxt();
-   }
- 
- 
-     document.getElementById('returnBtn').onclick = returnQuestion;
-     document.getElementById('startOverBtn').onclick = startOver;
- 
-     renderQuestion();
-   </script>
- </body>
- </html>
+
+  <script>
+    const questions = [
+      { question: "Is the product or technology innovative?", options: ["Yes", "No"], next: [2, 1] },
+      { question: "<span style='color:#FF0000'>No-Go</span>", options: [], next: [-1] },
+      { question: "Has Puratos recently done a similar collaboration?", options: ["Yes", "No"], next: [1, 3] },
+      { question: "Is the collaborator's work relevant to a Puratos business unit?", options: ["Yes", "No"], next: [4, 1] },
+      { question: "Is there customer demand for this type of product?", options: ["Yes", "No"], next: [5, 6] },
+      { question: "Has the technology been done by someone else?", options: ["Yes", "No"], next: [7, 8] },
+      { question: "Is it aligned with the goals of other internal teams?", options: ["Yes", "No"], next: [5, 8] },
+      { question: "Is the collaborator closer to commercialization or more specialized than competitors?", options: ["Yes", "No"], next: [8, 1] },
+      { question: "Do they already have a contract with another company?", options: ["Yes", "No"], next: [1, 9] },
+      { question: "Is the collaborator Scope 1 neutral, or working on it?", options: ["Yes", "No"], next: [10, 1] },
+      { question: "Are they Scope 2 & 3 neutral or working on it?", options: ["Yes", "No"], next: [11, 1] },
+      { question: "Are they aligned with sustainability initiatives?", options: ["Yes", "No"], next: [12, 1] },
+      { question: "What category best fits the collaboration?", options: ["Technology", "Ingredient"], next: [13, 14] },
+      { question: "Insert technology-specific questions here", options: [], next: [-1] },
+      { question: "Is it GRAS-certified?", options: ["Yes", "No"], next: [15, 16] },
+      { question: "Are there allergens in the product?", options: ["Yes", "No"], next: [1, 17] },
+      { question: "Do they have a plan for certification?", options: ["Yes", "No"], next: [15, 1] },
+      { question: "Is it GMO-free?", options: ["Yes", "No"], next: [18, 1] },
+      { question: "Insert more ingredient-specific questions here", options: [], next: [-1] },
+      { question: "<span style='color:#008000'>GO!</span>", options: [], next: [-1] }
+    ];
+
+    let currentQuestionIndex = 0;
+    let history = [];
+    let decisions = [];
+    let notesMap = {};
+
+    function stripHTML(html) {
+      const div = document.createElement("div");
+      div.innerHTML = html;
+      return div.textContent || div.innerText || "";
+    }
+
+    function renderQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById('question').innerHTML = currentQuestion.question;
+      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+      if (currentQuestion.options.length > 0) {
+        optionsContainer.style.display = 'flex';
+        currentQuestion.options.forEach((option, index) => {
+          const button = document.createElement('button');
+          button.className = 'btn';
+          button.textContent = option;
+          button.onclick = () => nextQuestion(index);
+          optionsContainer.appendChild(button);
+        });
+      } else {
+        optionsContainer.style.display = 'none';
+      }
+      document.getElementById('notes').value = notesMap[currentQuestionIndex] || '';
+      updateProgressBar();
+    }
+
+    function nextQuestion(optionIndex) {
+      const current = questions[currentQuestionIndex];
+      decisions.push({
+        question: stripHTML(current.question),
+        answer: current.options[optionIndex],
+        notes: document.getElementById('notes').value || ""
+      });
+      notesMap[currentQuestionIndex] = document.getElementById('notes').value || "";
+
+      const nextIndex = current.next[optionIndex];
+      if (nextIndex !== -1) {
+        const text = stripHTML(questions[nextIndex].question).toLowerCase();
+        if (["no-go", "go!", "insert technology-specific questions here", "insert more ingredient-specific questions here"].some(v => text.includes(v))) {
+          document.getElementById('downloadDocxBtn').style.display = "block";
+        }
+        history.push(currentQuestionIndex);
+        currentQuestionIndex = nextIndex;
+        renderQuestion();
+      } else {
+        showSummary();
+      }
+    }
+
+    function returnQuestion() {
+      notesMap[currentQuestionIndex] = document.getElementById('notes').value || "";
+      if (history.length > 0) {
+        currentQuestionIndex = history.pop();
+        document.getElementById('downloadDocxBtn').style.display = "none";
+        renderQuestion();
+      }
+    }
+
+    function startOver() {
+      history = [];
+      decisions = [];
+      notesMap = {};
+      currentQuestionIndex = 0;
+      document.getElementById('downloadDocxBtn').style.display = "none";
+      renderQuestion();
+    }
+
+    function updateProgressBar() {
+      const total = questions.length;
+      const isEnd = questions[currentQuestionIndex].next?.[0] === -1;
+      const complete = isEnd ? total : Math.min(history.length + 1, total);
+      const percent = (complete / total) * 100;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+    }
+
+    function showSummary() {
+      document.getElementById('downloadDocxBtn').style.display = "block";
+      const container = document.getElementById('container');
+      container.innerHTML = `<div class="inner-title">Your Decision Path</div><ul id="decisionTree"></ul>`;
+      const list = document.getElementById('decisionTree');
+      decisions.forEach(step => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>Q:</strong> ${step.question}<br><strong>A:</strong> ${step.answer}${step.notes ? `<br><strong>Notes:</strong> ${step.notes}` : ""}`;
+        list.appendChild(li);
+      });
+    }
+
+    function downloadTxt() {
+      let content = 'Your Decision Tree:\n\n';
+      decisions.forEach((step, i) => {
+        const prefix = i === 0 ? '' : '│   '.repeat(i - 1);
+        content += `${prefix}├── Q: ${step.question}\n`;
+        content += `${prefix}│   └── A: ${step.answer}\n`;
+        if (step.notes) content += `${prefix}│       (Notes: ${step.notes})\n`;
+      });
+      const blob = new Blob([content], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'decision-summary.txt';
+      link.click();
+    }
+
+    async function downloadDocx() {
+      const { Document, Packer, Paragraph, TextRun } = window.docx;
+      const doc = new Document();
+      doc.addSection({
+        children: decisions.map(step => new Paragraph({
+          children: [
+            new TextRun({ text: "Q: " + step.question, bold: true }),
+            new TextRun({ text: "\nA: " + step.answer, break: 1 }),
+            ...(step.notes ? [new TextRun({ text: "\nNotes: " + step.notes, break: 1 })] : []),
+            new TextRun({ text: "\n", break: 1 })
+          ]
+        }))
+      });
+      const blob = await Packer.toBlob(doc);
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = "decision-summary.docx";
+      link.click();
+    }
+
+    function downloadBoth() {
+      downloadDocx();
+      downloadTxt();
+    }
+
+    document.getElementById('returnBtn').onclick = returnQuestion;
+    document.getElementById('startOverBtn').onclick = startOver;
+    renderQuestion();
+  </script>
+</body>
+</html>
