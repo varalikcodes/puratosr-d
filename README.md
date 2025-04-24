@@ -5,7 +5,7 @@ This is an interactive, decision-tree-based web application built to streamline 
 
 ---
 
-## 🔍 Features
+## Features
 
 - Interactive decision tree with custom logic and branching
 - Optional notes field for user inputs at each step
@@ -16,7 +16,7 @@ This is an interactive, decision-tree-based web application built to streamline 
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **HTML5 + CSS3** — for responsive UI design
 - **Vanilla JavaScript** — for logic, state tracking, and dynamic rendering
@@ -24,7 +24,7 @@ This is an interactive, decision-tree-based web application built to streamline 
 
 ---
 
-## 🧠 Use Case
+## Use Case
 
 This tool was developed during the **MBS Externship Program (Spring 2025)** in collaboration with **Puratos R&D** and **Rutgers University**, to support structured innovation evaluation across:
 
@@ -34,7 +34,7 @@ This tool was developed during the **MBS Externship Program (Spring 2025)** in c
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 To run the project locally:
 
