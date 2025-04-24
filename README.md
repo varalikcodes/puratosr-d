@@ -39,6 +39,6 @@ This tool was developed during the **MBS Externship Program (Spring 2025)** in c
 To run the project locally:
 
 ```bash
-git clone https://github.com/yourusername/go-no-go-decision-system.git
+git clone https://github.com/varalikacodes/go-no-go-decision-system.git
 cd go-no-go-decision-system
 open index.html
