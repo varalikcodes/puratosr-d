@@ -1,4 +1,4 @@
-# puratosr&d
+# PuratosR&D via Rutgers MBS Externship
 # Industry & Startups Collaboration: Go-No-Go System
 
 This is an interactive, decision-tree-based web application built to streamline and structure the evaluation of R&D collaboration opportunities at **Puratos**. The goal is to empower teams with a consistent, logic-based framework to make **"Go" or "No-Go" decisions** based on innovation potential, strategic alignment, and sustainability criteria.
